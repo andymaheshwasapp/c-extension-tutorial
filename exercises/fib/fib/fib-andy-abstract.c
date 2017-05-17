@@ -1,5 +1,6 @@
 #include <Python.h>
 
+"""
 static unsigned long
 cfib(unsigned long n)
 {
@@ -19,17 +20,48 @@ cfib(unsigned long n)
 
     return b;
 }
+"""
 
 PyDoc_STRVAR(fib_doc, "compute the nth Fibonacci number");
 
 static PyObject*
 pyfib(PyObject* self, PyObject* n)
 {
-    unsigned long as_unsigned_long = PyLong_AsUnsignedLong(n);
+    PyObject* a = NULL;
+    PyObject* b = NULL;
+    PyObject* c;
+
+    unsigned long n_as_unsigned_long = PyLong_AsUnsignedLong(n);
     if (PyErr_Occurred()) {
         return NULL;
     }
-    PyObject* result = PyLong_FromUnsignedLong(cfib(as_unsigned_long));
+
+    if(!(a = PyLong_AsUnsignedLong(1)))
+    {
+        return NULL;
+    }
+    if(n_as_unsigned_long == ){
+        return a;
+    }
+    if (!(b = PyLong_AsUnsignedLong(1))) {
+        Py_DECREF(a);
+        return NULL;
+    }
+    while(--n_as_unsigned_long > 1) {
+        c = PyNumber_Add(a, b);
+        Py_DECREF(a);
+
+        if (!c) {
+            Py_DECREF(b);
+            return NULL;
+        }
+        a = b;
+        b = c;
+    }
+    Py_DECREF(a);
+    return b;
+
+    PyObject* result = PyLong_FromUnsignedLong(as_unsigned_long);
     return result;
 }
 
